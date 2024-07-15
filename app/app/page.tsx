@@ -33,6 +33,7 @@ import { formatFigures } from "../components/web3FiguresHelpers";
 import { GetAPY } from "../dataService/dataServices";
 import Loading from "../components/UI-assets/loading";
 import { Tooltip } from "react-tooltip";
+import { getNetworkDetails } from "@stellar/freighter-api";
 const MainDapp = () => {
   const {setConnectorWalletAddress, connectorWalletAddress, poolReserve, setPoolReserve,transactionsStatus,setSelectedPool, selectedPool,selectedNetwork} = UseStore()
   const [openState, setOpenState] = useState(false)
@@ -221,6 +222,22 @@ console.log({selectedNetwork})
       setSortOrder(prevOrder => (prevOrder === 'asc' ? 'desc' : 'asc'));
     }
   };
+  const [isTestnet, setIsTestnet] = useState<any>(null)
+  useEffect(() => {
+    const getNetwork = async () => {
+      const networkDetails = await getNetworkDetails()
+      console.log({networkDetails})
+      if(networkDetails.network == "PUBLIC"){
+        setIsTestnet(false)
+      } else if(networkDetails.network == "TESTNET"){
+        setIsTestnet(true)
+      } else{
+        setIsTestnet(null)
+      }
+      console.log({networkDetails: networkDetails.network})
+    }
+    getNetwork()
+  }, [])
   return (
     <>
     <div className="dapp">
@@ -228,9 +245,9 @@ console.log({selectedNetwork})
 
       <div className="md:w-9/12 md:max-lg:w-11/12 mx-auto md:pt-24 pt-8 px-5">
       {
-        selectedNetwork.network === "PUBLIC" && <div className="card max-w-[1100px] mx-auto px-4 text-lg text-center py-9 mb-6">
+        !isTestnet && <div className="card max-w-[1100px] mx-auto px-4 text-lg text-center py-9 mb-6">
         <p className="text-red-500 text-3xl">You are connected to the wrong network.</p>
-        <Link href={"https://mainnet-bondhive.vercel.app/"} target="_blank"><p className=" text-white underline">Link to use Mainnet</p></Link>
+        <Link href={"https://mainnet-bondhive.vercel.app/app"} target="_blank"><p className=" text-white underline">Link to use Mainnet</p></Link>
       </div>
       }
       <div className="card max-w-[1100px] mx-auto px-4 text-center py-3 mb-6 flex items-center justify-center gap-3">
@@ -426,7 +443,7 @@ console.log({selectedNetwork})
               </div>
             </div>
             {
-          loadPool && selectedNetwork.network !== "PUBLIC" ? (
+          loadPool && isTestnet ? (
             <div className="table_pool_container max-lg:hidden">
               {pools.map((pool: any, index: number) => (
                 <div
@@ -530,7 +547,7 @@ console.log({selectedNetwork})
                     }
             {/*Mobile Pool Strategies */}
             {
-          loadPool && selectedNetwork.network !== "PUBLIC" ? (
+          loadPool && isTestnet ? (
             <div className="table_pool_container_mobile flex-col gap-4 hidden max-lg:flex">
               {pool.map((pool: any, index:number) => (
                 <div
