@@ -237,7 +237,7 @@ console.log({selectedNetwork})
       {
         !isTestnet && <div className="card max-w-[1100px] mx-auto px-4 text-lg text-center py-9 mb-6">
         <p className="text-red-500 text-3xl">You are connected to the wrong network.</p>
-        <Link href={"https://mainnet-bondhive.vercel.app/app"} target="_blank"><p className=" text-white underline">Link to use Mainnet</p></Link>
+        <Link href={"https://bondhive.xyz/app"} target="_blank"><p className=" text-white underline">Link to use Mainnet</p></Link>
       </div>
       }
       <div className="card max-w-[1100px] mx-auto px-4 text-center py-3 mb-6 flex items-center justify-center gap-3">
