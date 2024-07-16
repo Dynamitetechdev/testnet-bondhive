@@ -194,35 +194,24 @@ console.log({selectedNetwork})
         return result
       }
 
-  const sortFunc = (type: string) => {
-    if(type === "apy"){
-      setPools((prevPools: any) => {
-        const sortedPools = [...prevPools].sort((a, b) => {
-          if (sortOrder === 'asc') {
-            return parseFloat(a.apy) - parseFloat(b.apy);
-          } else {
-            return parseFloat(b.apy) - parseFloat(a.apy);
-          }
+      const sortFunc = (type: string) => {
+        setPools((prevPools: any) => {
+          const sortedPools = [...prevPools].sort((a, b) => {
+            const valueA = type === "apy" ? parseFloat(a.apy) : parseFloat(a.reserves);
+            const valueB = type === "apy" ? parseFloat(b.apy) : parseFloat(b.reserves);
+      
+            if (sortOrder === 'asc') {
+              return valueA - valueB;
+            } else {
+              return valueB - valueA;
+            }
+          });
+          console.log({ sortedPools });
+          return sortedPools; // Return the sortedPools array directly, not wrapped in an object
         });
-        console.log({sortedPools})
-        return  {sortedPools};
-      });
-      setSortOrder(prevOrder => (prevOrder === 'asc' ? 'desc' : 'asc'));
-    } else{
-      setPools((prevPools: any) => {
-        const sortedPools = [...prevPools].sort((a, b) => {
-          if (sortOrder === 'asc') {
-            return parseFloat(a.reserves) - parseFloat(b.reserves);
-          } else {
-            return parseFloat(b.reserves) - parseFloat(a.reserves);
-          }
-        });
-        console.log({sortedPools})
-        return {sortedPools};
-      });
-      setSortOrder(prevOrder => (prevOrder === 'asc' ? 'desc' : 'asc'));
-    }
-  };
+        
+        setSortOrder(prevOrder => (prevOrder === 'asc' ? 'desc' : 'asc'));
+      };
   const [isTestnet, setIsTestnet] = useState<any>(null)
   useEffect(() => {
     const getNetwork = async () => {

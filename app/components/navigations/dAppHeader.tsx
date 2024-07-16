@@ -256,7 +256,7 @@ const [networkChange, setNetworkChange] = useState(false)
           <Link href={"/"}>
           <div className="logo flex items-center ">
             <Image src={BondHiveLogo} width={40} height={40} alt="bondhive" />
-            <p className="text-lg font-semibold text-white">Bondhive <span className="text-sm">(Testnet)</span></p>
+            <p className="text-lg font-semibold text-white">Bondhive <span className="text-sm hidden md:block">(Testnet)</span></p>
           </div>
           </Link>
           <ul className="flex justify-between gap-7 pl-3 max-lg:hidden">
